@@ -1,7 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { useAppDispatch } from '../../app/stores';
-import { IPost, postAdded } from './postsSlice';
-import { nanoid } from '@reduxjs/toolkit';
+import { postAdded } from './postsSlice';
 
 const AddPostForm = () => {
   const [title, setTitle] = useState("");
@@ -11,15 +10,11 @@ const AddPostForm = () => {
   const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
   const onContentChanged = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
 
-  const onSavePostClicked = () => {
+  const onSavePostClicked = (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (title && content) {
-      const newPost: IPost = {
-        id: nanoid(),
-        title,
-        content,
-      };
       dispatch(
-        postAdded(newPost)
+        postAdded(title, content)
       );
       setTitle('');
       setContent('');
@@ -29,7 +24,7 @@ const AddPostForm = () => {
   return (
     <section>
       <h2>Add a New Post</h2>
-      <form>
+      <form onSubmit={onSavePostClicked}>
         <label htmlFor="postTitle">Post Title:</label>
         <input
           type="text"
@@ -45,7 +40,7 @@ const AddPostForm = () => {
           value={content}
           onChange={onContentChanged}
         />
-        <button type='button' onClick={onSavePostClicked}>
+        <button type='submit'>
           Save Post
         </button>
       </form>
