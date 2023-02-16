@@ -1,11 +1,13 @@
 import { PayloadAction } from "./../../../../node_modules/@reduxjs/toolkit/src/createAction";
 import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { sub } from 'date-fns';
 
 export interface IPost {
   id: string;
   title: string;
   content: string;
   userId: string;
+  date: string;
 }
 
 const initialState: IPost[] = [
@@ -14,7 +16,7 @@ const initialState: IPost[] = [
     title: 'Learning Redux Toolkit',
     content: "I've heard good things.",
     userId: '0',
-    // date: sub(new Date(), { minutes: 10 }).toISOString(),
+    date: sub(new Date(), { minutes: 10 }).toISOString(),
     // reactions: {
     //   thumbsUp: 0,
     //   wow: 0,
@@ -28,7 +30,7 @@ const initialState: IPost[] = [
     title: 'Slices...',
     content: "The more I say slice, the more I want pizza.",
     userId: '1',
-    // date: sub(new Date(), { minutes: 5 }).toISOString(),
+    date: sub(new Date(), { minutes: 5 }).toISOString(),
     // reactions: {
     //   thumbsUp: 0,
     //   wow: 0,
@@ -53,6 +55,7 @@ export const postsSlice = createSlice({
           title,
           content,
           userId,
+          date: new Date().toISOString(),
         };
         return {
           payload: newPost
