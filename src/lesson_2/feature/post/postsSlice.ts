@@ -8,7 +8,29 @@ export interface IPost {
   content: string;
   userId: string;
   date: string;
+  reactions: IReactions;
 }
+
+export interface IReactions {
+  thumbsUp: number;
+  wow: number;
+  heart: number;
+  rocket: number;
+  coffee: number;
+}
+
+type TReaction = {
+  postId: string;
+  reaction: keyof IReactions;
+};
+
+const initReactions: IReactions = {
+  thumbsUp: 0,
+  wow: 0,
+  heart: 0,
+  rocket: 0,
+  coffee: 0
+};
 
 const initialState: IPost[] = [
   {
@@ -17,13 +39,7 @@ const initialState: IPost[] = [
     content: "I've heard good things.",
     userId: '0',
     date: sub(new Date(), { minutes: 10 }).toISOString(),
-    // reactions: {
-    //   thumbsUp: 0,
-    //   wow: 0,
-    //   heart: 0,
-    //   rocket: 0,
-    //   coffee: 0
-    // }
+    reactions: initReactions
   },
   {
     id: '2',
@@ -31,13 +47,7 @@ const initialState: IPost[] = [
     content: "The more I say slice, the more I want pizza.",
     userId: '1',
     date: sub(new Date(), { minutes: 5 }).toISOString(),
-    // reactions: {
-    //   thumbsUp: 0,
-    //   wow: 0,
-    //   heart: 0,
-    //   rocket: 0,
-    //   coffee: 0
-    // }
+    reactions: initReactions
   }
 ];
 
@@ -56,14 +66,22 @@ export const postsSlice = createSlice({
           content,
           userId,
           date: new Date().toISOString(),
+          reactions: initReactions
         };
         return {
           payload: newPost
         };
       },
+    },
+    reactionAdded: (state, action: PayloadAction<TReaction>) => {
+      const { postId, reaction } = action.payload;
+      const existingPost = state.find(post => post.id === postId);
+      if (existingPost) {
+        existingPost.reactions[reaction]++;
+      }
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { postAdded } = postsSlice.actions;
+export const { postAdded, reactionAdded } = postsSlice.actions;
