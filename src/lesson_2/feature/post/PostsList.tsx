@@ -1,8 +1,8 @@
 import { useAppSelector } from '../../app/stores';
-import { postsSelector } from './postsSelector';
+import { selectAllPosts } from './postsSelector';
 
 const PostsList = () => {
-  const posts = useAppSelector(postsSelector);
+  const posts = useAppSelector(selectAllPosts);
 
   const renderedPosts = posts.map(post => (
     <article key={post.id}>

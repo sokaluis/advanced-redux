@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = [
+export interface IPost {
+  id: string;
+  title: string;
+  content: string;
+}
+
+const initialState: IPost[] = [
   {
     id: '1',
     title: 'Learning Redux Toolkit',
@@ -32,7 +38,12 @@ const initialState = [
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {}
+  reducers: {
+    postAdded: (state, action) => {
+      state.push(action.payload);
+    }
+  }
 });
+
 // Action creators are generated for each case reducer function
-export const { } = postsSlice.actions;
+export const { postAdded } = postsSlice.actions;
