@@ -1,11 +1,17 @@
-import { useAppSelector } from '../../app/stores';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/stores';
 import PostAuthor from './PostAuthor';
 import ReactionButtons from './ReactionButtons';
 import TimeAgo from './TimeAgo';
-import { selectAllPosts } from './postsSelector';
+import { selectAllPosts, getPostsStatus, getPostsErrors } from './postsSelector';
+import { fetchPosts } from './postsThunk';
 
 const PostsList = () => {
+  const dispatch = useAppDispatch();
+
   const posts = useAppSelector(selectAllPosts);
+  const postsStatus = useAppSelector(getPostsStatus);
+  const postsErrors = useAppSelector(getPostsErrors);
 
   const orderedPost = posts.slice().sort((a, b) => b.date.localeCompare(a.date));
 
@@ -20,6 +26,13 @@ const PostsList = () => {
       <ReactionButtons post={post} />
     </article>
   ));
+
+  useEffect(() => {
+    if (postsStatus === 'idle') {
+      dispatch(fetchPosts());
+    }
+  }, [postsStatus]);
+
 
   return (
     <section>

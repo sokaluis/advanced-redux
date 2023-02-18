@@ -1,6 +1,14 @@
-import { PayloadAction } from "./../../../../node_modules/@reduxjs/toolkit/src/createAction";
-import { createSlice, nanoid } from '@reduxjs/toolkit';
-import { sub } from 'date-fns';
+import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
+import { fetchPosts } from './postsThunk';
+import { sub } from "date-fns";
+
+type TStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
+
+interface IPosts {
+  posts: any[];
+  status: TStatus;
+  error: null | Error;
+}
 
 export interface IPost {
   id: string;
@@ -24,6 +32,12 @@ type TReaction = {
   reaction: keyof IReactions;
 };
 
+const initialState: IPosts = {
+  posts: [],
+  status: 'idle',
+  error: null
+};
+
 const initReactions: IReactions = {
   thumbsUp: 0,
   wow: 0,
@@ -32,32 +46,17 @@ const initReactions: IReactions = {
   coffee: 0
 };
 
-const initialState: IPost[] = [
-  {
-    id: '1',
-    title: 'Learning Redux Toolkit',
-    content: "I've heard good things.",
-    userId: '0',
-    date: sub(new Date(), { minutes: 10 }).toISOString(),
-    reactions: initReactions
-  },
-  {
-    id: '2',
-    title: 'Slices...',
-    content: "The more I say slice, the more I want pizza.",
-    userId: '1',
-    date: sub(new Date(), { minutes: 5 }).toISOString(),
-    reactions: initReactions
-  }
-];
-
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
     postAdded: {
-      reducer(state, action: PayloadAction<IPost>) {
-        state.push(action.payload);
+      reducer(state, action: PayloadAction<IPosts>) {
+        state = {
+          posts: [action.payload.posts],
+          status: action.payload.status,
+          error: action.payload.error
+        };
       },
       prepare(title: string, content: string, userId: string) {
         const newPost: IPost = {
@@ -68,19 +67,45 @@ export const postsSlice = createSlice({
           date: new Date().toISOString(),
           reactions: initReactions
         };
-        return {
-          payload: newPost
+        const payload: IPosts = {
+          posts: [newPost],
+          status: 'succeeded',
+          error: null,
         };
+        return { payload };
       },
     },
     reactionAdded: (state, action: PayloadAction<TReaction>) => {
       const { postId, reaction } = action.payload;
-      const existingPost = state.find(post => post.id === postId);
+      const existingPost = state.posts.find(post => post.id === postId);
       if (existingPost) {
         existingPost.reactions[reaction]++;
       }
     }
-  }
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchPosts.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<any>) => {
+        state.status = 'succeeded';
+        // Adding date and reactions
+        let min = 1;
+        const loadedPosts = action.payload.map((post: any) => {
+          post.date = sub(new Date(), { minutes: min++ }).toISOString();
+          post.reactions = initReactions;
+          return post;
+        });
+
+        // Add any fetched posts to the array
+        state.posts = state.posts.concat(loadedPosts);
+      })
+      .addCase(fetchPosts.rejected, (state, action: PayloadAction<any>) => {
+        state.status = 'failed';
+        state.error = action.payload.error.message;
+      });
+  },
 });
 
 // Action creators are generated for each case reducer function
