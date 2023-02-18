@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import SecondApp from './lesson_2/SecondApp';
-// import FirstApp from './lesson_1/FirstApp';
+import Lesson3 from './lesson_3/Lesson3';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     {/* <FirstApp /> */}
-    <SecondApp />
+    {/* <SecondApp /> */}
+    <Lesson3 />
   </React.StrictMode>,
 );
