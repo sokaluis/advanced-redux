@@ -2,32 +2,43 @@ import { ChangeEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/stores';
 import { postAdded } from './postsSlice';
 import { selectAllUsers } from '../users/userSelector';
+import { TStatus } from '../typescript/types';
+import { addNewPost } from './postsThunk';
+import { nanoid } from '@reduxjs/toolkit';
 
 const AddPostForm = () => {
+  const dispatch = useAppDispatch();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");
-  const users = useAppSelector(selectAllUsers);
+  const [addRequestStatus, setAddRequestStatus] = useState<TStatus>('idle');
 
-  const dispatch = useAppDispatch();
+  const users = useAppSelector(selectAllUsers);
 
   const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
   const onContentChanged = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
   const onAuthorChanged = (e: ChangeEvent<HTMLSelectElement>) => setUserId(e.target.value);
 
+  const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle';
+
   const onSavePostClicked = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (title && content) {
-      dispatch(
-        postAdded(title, content, userId)
-      );
-      setTitle('');
-      setContent('');
-      setUserId('');
+    if (canSave) {
+      try {
+        setAddRequestStatus('loading');
+        dispatch(addNewPost({ title, body: content, userId: Number(userId), id: Number(nanoid()) })).unwrap();
+        setTitle('');
+        setContent('');
+        setUserId('');
+      } catch (err) {
+        console.error('Failed to save the post', err);
+      } finally {
+        setAddRequestStatus('idle');
+      }
     }
   };
 
-  const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
 
   const userOptions = users.map(user => (
     <option key={user.id} value={user.id}>

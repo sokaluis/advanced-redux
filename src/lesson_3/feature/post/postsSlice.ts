@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
-import { fetchPosts } from './postsThunk';
+import { addNewPost, fetchPosts } from './postsThunk';
 import { sub } from "date-fns";
 import { JSONPosts, TStatus } from '../typescript/types';
 
@@ -97,6 +97,12 @@ export const postsSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action: PayloadAction<any>) => {
         state.status = 'failed';
         state.error = action.payload.error.message;
+      })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        action.payload.userId = Number(action.payload.userId);
+        action.payload.date = new Date().toISOString();
+        action.payload.reactions = initReactions;
+        state.posts.push(action.payload);
       });
   },
 });

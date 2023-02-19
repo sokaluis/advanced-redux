@@ -13,3 +13,13 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (): Promise
     return errorMessage;
   }
 });
+
+export const addNewPost = createAsyncThunk('posts/addNewPost', async (initialPost: JSONPosts) => {
+  try {
+    const response = await axios.post(POSTS_URL, initialPost);
+    return response.data;
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    return errorMessage;
+  }
+});
