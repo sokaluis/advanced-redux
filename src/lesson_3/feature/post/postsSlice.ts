@@ -1,20 +1,17 @@
 import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
 import { fetchPosts } from './postsThunk';
 import { sub } from "date-fns";
+import { JSONPosts } from '../typescript/types';
 
 type TStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
 
 interface IPosts {
-  posts: any[];
+  posts: IPost[];
   status: TStatus;
   error: null | Error;
 }
 
-export interface IPost {
-  id: string;
-  title: string;
-  content: string;
-  userId: string;
+export interface IPost extends JSONPosts {
   date: string;
   reactions: IReactions;
 }
@@ -28,7 +25,7 @@ export interface IReactions {
 }
 
 type TReaction = {
-  postId: string;
+  postId: number;
   reaction: keyof IReactions;
 };
 
@@ -52,17 +49,15 @@ export const postsSlice = createSlice({
   reducers: {
     postAdded: {
       reducer(state, action: PayloadAction<IPosts>) {
-        state = {
-          posts: [action.payload.posts],
-          status: action.payload.status,
-          error: action.payload.error
-        };
+        state.posts = action.payload.posts;
+        state.status = action.payload.status;
+        state.error = action.payload.error;
       },
-      prepare(title: string, content: string, userId: string) {
+      prepare(title: string, body: string, userId: number) {
         const newPost: IPost = {
-          id: nanoid(),
+          id: Number(nanoid()),
           title,
-          content,
+          body,
           userId,
           date: new Date().toISOString(),
           reactions: initReactions
@@ -99,7 +94,7 @@ export const postsSlice = createSlice({
         });
 
         // Add any fetched posts to the array
-        state.posts = state.posts.concat(loadedPosts);
+        state.posts = loadedPosts;
       })
       .addCase(fetchPosts.rejected, (state, action: PayloadAction<any>) => {
         state.status = 'failed';

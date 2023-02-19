@@ -3,7 +3,7 @@ import { useAppSelector } from '../../app/stores';
 import { selectAllUsers } from '../users/userSelector';
 
 interface IPostAuthor extends PropsWithChildren {
-  userId: string;
+  userId: number;
 }
 
 const PostAuthor: FC<IPostAuthor> = ({ userId }) => {
