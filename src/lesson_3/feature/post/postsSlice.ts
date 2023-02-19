@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
 import { addNewPost, fetchPosts } from './postsThunk';
 import { sub } from "date-fns";
-import { JSONPosts, TStatus } from '../typescript/types';
+import { JSONPosts, TStatus } from '../../typescript/types';
 
 interface IPosts {
   posts: IPost[];

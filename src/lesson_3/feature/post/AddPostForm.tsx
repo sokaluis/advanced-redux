@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/stores';
 import { postAdded } from './postsSlice';
 import { selectAllUsers } from '../users/userSelector';
-import { TStatus } from '../typescript/types';
+import { TStatus } from '../../typescript/types';
 import { addNewPost } from './postsThunk';
 import { nanoid } from '@reduxjs/toolkit';
 

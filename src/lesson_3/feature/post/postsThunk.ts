@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { JSONPosts } from "../typescript/types";
+import { JSONPosts } from "../../typescript/types";
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
