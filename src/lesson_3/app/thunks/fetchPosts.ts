@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AsyncMatcher, JSONPosts } from "../../typescript";
+import { AsyncFullMatchers, JSONPosts } from "../../typescript";
 import { IPostsState, IPost } from '../../feature/post/postsSlice';
 import { sub } from "date-fns";
 import { extendedMatcher, initReactions } from "../../utils";
 
-interface IFetchPostMatcher extends AsyncMatcher<IPostsState, IPost[]> { }
+interface IFetchPostMatcher extends AsyncFullMatchers<IPostsState, IPost[]> { }
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 

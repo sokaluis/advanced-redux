@@ -1,4 +1,4 @@
-import { AsyncExtendMatcher, TError, TStatus } from "../typescript";
+import { AsyncExtraMatchers, TError, TStatus } from "../typescript";
 
 interface IExtendedMatcher {
   pending: {
@@ -9,7 +9,12 @@ interface IExtendedMatcher {
   };
 }
 
-export const extendedMatcher = <TState extends { status: TStatus, error: TError; }, T extends IExtendedMatcher>(thunk: T): AsyncExtendMatcher<TState> => {
+interface TStatusMatcher {
+  status: TStatus;
+  error: TError;
+}
+
+export const extendedMatcher = <TState extends TStatusMatcher, T extends IExtendedMatcher>(thunk: T): AsyncExtraMatchers<TState> => {
   return {
     pendingMatcher: (action) => action.type === thunk.pending.type,
     pendingReducer: (state) => {

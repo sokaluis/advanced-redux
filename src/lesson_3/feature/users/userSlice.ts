@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { JSONUsers, TStatus } from '../../typescript';
-import { fetchUsers } from './usersThunks';
+import { fetchUsersMatcher } from '../../app/thunks';
 
 export interface IUsersState {
   users: JSONUsers[];
@@ -19,15 +19,7 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder
-      .addCase(fetchUsers.pending, (state) => {
-        state.loading = 'loading';
-      })
-      .addCase(fetchUsers.fulfilled, (state, { payload }) => {
-        state.users = payload as JSONUsers[];
-        state.loading = 'succeeded';
-        state.error = null;
-      });
+    builder.addMatcher(fetchUsersMatcher.matcher, fetchUsersMatcher.reducer);
   }
 });
 
