@@ -1,23 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { fetchPostMatcher, addNewPostMatcher, updatePostMatcher, deletePostMatcher } from '../../app/thunks';
-import { IReactions, JSONPosts, TStatus } from '../../typescript';
-
-export interface IPostsState {
-  posts: IPost[];
-  status: TStatus;
-  error: null | string;
-  count?: number;
-}
-
-export interface IPost extends JSONPosts {
-  date: string;
-  reactions: IReactions;
-}
-
-type TReaction = {
-  postId: number;
-  reaction: keyof IReactions;
-};
+import { IPostsState, TReaction } from '../../typescript';
 
 const initialState: IPostsState = {
   posts: [],

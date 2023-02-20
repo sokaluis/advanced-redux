@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/stores';
+import { useAppSelector } from '../../app/stores';
 
 import { selectAllPosts, getPostsStatus, getPostsErrors } from './postsSelector';
 import PostsExcerpt from './PostsExcerpt';

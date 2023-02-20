@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AsyncFullMatchers, JSONPosts } from "../../typescript";
-import { IPostsState, IPost } from '../../feature/post/postsSlice';
+import { AsyncFullMatchers, IPost, IPostsState, JSONPosts } from "../../typescript";
 import { sub } from "date-fns";
 import { extendedMatcher, initReactions } from "../../utils";
 

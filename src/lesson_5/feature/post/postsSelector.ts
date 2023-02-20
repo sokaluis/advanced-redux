@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState, stateSelect } from '../../app/stores';
-import { IPost } from './postsSlice';
+import { IPost } from '../../typescript';
 
 export const selectAllPosts = createSelector(stateSelect, state => state.posts.posts);
 export const getPostsStatus = createSelector(stateSelect, state => state.posts.status);

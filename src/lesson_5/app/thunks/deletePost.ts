@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { IPost, IPostsState } from '../../feature/post/postsSlice';
 import axios from "axios";
-import { AsyncBasicMatcher } from "../../typescript";
+import { AsyncBasicMatcher, IPost, IPostsState } from "../../typescript";
 
 interface IDeletePostMatcher extends AsyncBasicMatcher<IPostsState, IPost> { }
 

@@ -1,15 +1,15 @@
-import { PropsWithChildren, FC, memo } from 'react';
-import { IPost } from './postsSlice';
+import { PropsWithChildren, FC } from 'react';
 import PostAuthor from './PostAuthor';
 import ReactionButtons from './ReactionButtons';
 import TimeAgo from './TimeAgo';
 import { Link } from 'react-router-dom';
+import { IPost } from '../../typescript';
 
 interface PostsExcerptProps extends PropsWithChildren {
   post: IPost;
 }
 
-let PostsExcerpt: FC<PostsExcerptProps> = ({ post }) => {
+const PostsExcerpt: FC<PostsExcerptProps> = ({ post }) => {
   return (
     <article>
       <h2>{post.title}</h2>
@@ -24,6 +24,7 @@ let PostsExcerpt: FC<PostsExcerptProps> = ({ post }) => {
   );
 };
 
-PostsExcerpt = memo(PostsExcerpt);
+// Memo solution
+// PostsExcerpt = memo(PostsExcerpt);
 
 export default PostsExcerpt;
