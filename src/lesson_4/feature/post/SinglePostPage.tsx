@@ -1,3 +1,4 @@
+import { Link, useParams } from "react-router-dom";
 import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
@@ -5,10 +6,8 @@ import { selectPostById } from './postsSelector';
 import { useAppSelector } from '../../app/stores';
 
 const SinglePostPage = () => {
-  // const { postId } = useParams();
-  const postId = 1;
-
-  const post = useAppSelector((state) => selectPostById(state, postId));
+  const { postId } = useParams();
+  const post = useAppSelector((state) => selectPostById(state, Number(postId)));
 
   if (!post) {
     return (
@@ -23,7 +22,7 @@ const SinglePostPage = () => {
       <h2>{post.title}</h2>
       <p>{post.body}</p>
       <p className="postCredit">
-        {/* <Link to={`/post/edit/${post.id}`}>Edit Post</Link> */}
+        <Link to={`/post/edit/${post.id}`}>Edit Post</Link>
         <PostAuthor userId={post.userId} />
         <TimeAgo timestamp={post.date} />
       </p>

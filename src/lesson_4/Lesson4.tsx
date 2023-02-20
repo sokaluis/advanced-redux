@@ -3,12 +3,13 @@ import PostsList from './feature/post/PostsList';
 import { store } from './app/stores';
 import AddPostForm from './feature/post/AddPostForm';
 import './styles.css';
-import { fetchUsers } from './feature/users/usersThunks';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import SinglePostPage from './feature/post/SinglePostPage';
+import { fetchUsersThunk } from './app/thunks';
+import EditPostForm from './feature/post/EditPostPage';
 
-store.dispatch(fetchUsers());
+store.dispatch(fetchUsersThunk());
 
 const App = () => (
   <Routes>
@@ -17,7 +18,7 @@ const App = () => (
       <Route path="post">
         <Route index element={<AddPostForm />} />
         <Route path=":postId" element={<SinglePostPage />} />
-        {/* <Route path="edit/:postId" element={<EditPostForm />} /> */}
+        <Route path="edit/:postId" element={<EditPostForm />} />
       </Route>
     </Route>
   </Routes>

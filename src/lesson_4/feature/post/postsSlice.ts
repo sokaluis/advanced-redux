@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { fetchPostMatcher, addNewPostMatcher } from '../../app/thunks';
+import { fetchPostMatcher, addNewPostMatcher, updatePostMatcher } from '../../app/thunks';
 import { IReactions, JSONPosts, TStatus } from '../../typescript';
 
 export interface IPostsState {
@@ -9,7 +9,7 @@ export interface IPostsState {
 }
 
 export interface IPost extends JSONPosts {
-  date: string;
+  date?: string;
   reactions: IReactions;
 }
 
@@ -43,7 +43,8 @@ export const postsSlice = createSlice({
       .addMatcher(fetchPostMatcher.rejectedMatcher, fetchPostMatcher.rejectedReducer)
       .addMatcher(addNewPostMatcher.matcher, addNewPostMatcher.reducer)
       .addMatcher(addNewPostMatcher.pendingMatcher, addNewPostMatcher.pendingReducer)
-      .addMatcher(addNewPostMatcher.rejectedMatcher, addNewPostMatcher.rejectedReducer);
+      .addMatcher(addNewPostMatcher.rejectedMatcher, addNewPostMatcher.rejectedReducer)
+      .addMatcher(updatePostMatcher.matcher, updatePostMatcher.reducer);
   },
 });
 

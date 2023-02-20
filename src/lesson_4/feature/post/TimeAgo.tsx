@@ -2,7 +2,7 @@ import { formatDistanceToNow, parseISO } from "date-fns";
 import { FC, PropsWithChildren } from "react";
 
 interface ITimeAgo extends PropsWithChildren {
-  timestamp: string;
+  timestamp: string | undefined;
 }
 
 const TimeAgo: FC<ITimeAgo> = ({ timestamp }) => {
