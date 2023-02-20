@@ -1,4 +1,4 @@
-import { PropsWithChildren, FC } from 'react';
+import { PropsWithChildren, FC, memo } from 'react';
 import { IPost } from './postsSlice';
 import PostAuthor from './PostAuthor';
 import ReactionButtons from './ReactionButtons';
@@ -9,7 +9,7 @@ interface PostsExcerptProps extends PropsWithChildren {
   post: IPost;
 }
 
-const PostsExcerpt: FC<PostsExcerptProps> = ({ post }) => {
+let PostsExcerpt: FC<PostsExcerptProps> = ({ post }) => {
   return (
     <article>
       <h2>{post.title}</h2>
@@ -23,5 +23,7 @@ const PostsExcerpt: FC<PostsExcerptProps> = ({ post }) => {
     </article>
   );
 };
+
+PostsExcerpt = memo(PostsExcerpt);
 
 export default PostsExcerpt;
