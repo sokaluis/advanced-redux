@@ -6,10 +6,11 @@ import './styles.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import SinglePostPage from './feature/post/SinglePostPage';
-import { fetchUsersThunk } from './app/thunks';
+import { fetchUsersThunk, fetchPostsThunk } from './app/thunks';
 import EditPostForm from './feature/post/EditPostPage';
 
 store.dispatch(fetchUsersThunk());
+store.dispatch(fetchPostsThunk());
 
 const App = () => (
   <Routes>
