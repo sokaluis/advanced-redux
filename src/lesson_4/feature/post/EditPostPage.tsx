@@ -6,6 +6,7 @@ import { ChangeEvent, useState } from "react";
 import { TStatus } from "../../typescript";
 import { updatePostThunk } from '../../app/thunks/updatePost';
 import { IPost } from './postsSlice';
+import { deletePostThunk } from "../../app/thunks";
 
 const EditPostForm = () => {
   const { postId } = useParams();
@@ -38,6 +39,7 @@ const EditPostForm = () => {
   const onSavePostClicked = () => {
     if (canSave) {
       const updatedPost: IPost = {
+        ...post,
         id: post.id,
         title,
         body: content,
@@ -67,21 +69,21 @@ const EditPostForm = () => {
     >{user.name}</option>
   ));
 
-  // const onDeletePostClicked = () => {
-  //   try {
-  //     setRequestStatus('pending');
-  //     dispatch(deletePost({ id: post.id })).unwrap();
+  const onDeletePostClicked = () => {
+    try {
+      setRequestStatus('loading');
+      dispatch(deletePostThunk({ ...post, id: post.id })).unwrap();
 
-  //     setTitle('');
-  //     setContent('');
-  //     setUserId('');
-  //     navigate('/');
-  //   } catch (err) {
-  //     console.error('Failed to delete the post', err);
-  //   } finally {
-  //     setRequestStatus('idle');
-  //   }
-  // };
+      setTitle('');
+      setContent('');
+      setUserId(0);
+      navigate('/');
+    } catch (err) {
+      console.error('Failed to delete the post', err);
+    } finally {
+      setRequestStatus('idle');
+    }
+  };
 
   return (
     <section>
@@ -114,12 +116,12 @@ const EditPostForm = () => {
         >
           Save Post
         </button>
-        {/* <button className="deleteButton"
+        <button className="deleteButton"
           type="button"
           onClick={onDeletePostClicked}
         >
           Delete Post
-        </button> */}
+        </button>
       </form>
     </section>
   );
