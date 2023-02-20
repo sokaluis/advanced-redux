@@ -5,6 +5,7 @@ import { IPost } from './postsSlice';
 export const selectAllPosts = createSelector(stateSelect, state => state.posts.posts);
 export const getPostsStatus = createSelector(stateSelect, state => state.posts.status);
 export const getPostsErrors = createSelector(stateSelect, state => state.posts.error);
+export const getCounter = createSelector(stateSelect, state => state.posts.count);
 
 export const selectPostById = createSelector(
   [selectAllPosts, (_: RootState, postId: number) => postId],

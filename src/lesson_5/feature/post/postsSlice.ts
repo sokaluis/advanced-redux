@@ -6,6 +6,7 @@ export interface IPostsState {
   posts: IPost[];
   status: TStatus;
   error: null | string;
+  count?: number;
 }
 
 export interface IPost extends JSONPosts {
@@ -21,7 +22,8 @@ type TReaction = {
 const initialState: IPostsState = {
   posts: [],
   status: 'idle',
-  error: null
+  error: null,
+  count: 0,
 };
 
 export const postsSlice = createSlice({
@@ -34,6 +36,9 @@ export const postsSlice = createSlice({
       if (existingPost) {
         existingPost.reactions[reaction]++;
       }
+    },
+    increaseCount: (state) => {
+      state.count = state.count! + 1;
     }
   },
   extraReducers(builder) {
@@ -50,4 +55,4 @@ export const postsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { reactionAdded } = postsSlice.actions;
+export const { reactionAdded, increaseCount } = postsSlice.actions;
