@@ -1,7 +1,8 @@
 
 import { useDispatch } from "react-redux";
-import { reactionAdded, IPost, IReactions } from './postsSlice';
+import { reactionAdded, IPost } from './postsSlice';
 import { FC, PropsWithChildren } from "react";
+import { IReactions } from "../../typescript";
 
 interface IReactionButtons extends PropsWithChildren {
   post: IPost;

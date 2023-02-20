@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AsyncMatcher, JSONPosts } from "../../typescript";
-import { IPostsState } from '../../feature/post/postsSlice';
+import { IPostsState, IPost } from '../../feature/post/postsSlice';
 import { sub } from "date-fns";
 import { extendedMatcher, initReactions } from "../../utils";
 
-interface IFetchPostMatcher extends AsyncMatcher<IPostsState, any> { }
+interface IFetchPostMatcher extends AsyncMatcher<IPostsState, IPost[]> { }
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
@@ -22,11 +22,11 @@ export const fetchPostsThunk = createAsyncThunk('posts/fetchPosts', async (): Pr
 export const fetchPostMatcher: IFetchPostMatcher = {
   ...extendedMatcher<IPostsState, typeof fetchPostsThunk>(fetchPostsThunk),
   matcher: (action) => action.type === fetchPostsThunk.fulfilled.type,
-  reducer(state, action) {
+  reducer: (state, action) => {
     state.status = 'succeeded';
     // Adding date and reactions
     let min = 1;
-    const loadedPosts = action.payload.map((post: any) => {
+    const loadedPosts = action.payload.map((post) => {
       post.date = sub(new Date(), { minutes: min++ }).toISOString();
       post.reactions = initReactions;
       return post;

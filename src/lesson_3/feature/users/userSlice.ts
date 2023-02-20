@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { JSONUsers, TStatus } from '../../typescript/types';
+import { JSONUsers, TStatus } from '../../typescript';
 import { fetchUsers } from './usersThunks';
 
 export interface IUsersState {

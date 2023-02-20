@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { JSONUsers } from "../../typescript/types";
+import { JSONUsers } from "../../typescript";
 import axios from "axios";
 
 const USERS_URL = 'https://jsonplaceholder.typicode.com/users';
