@@ -12,3 +12,8 @@ export const selectPostById = createSelector(
     return postsState.find((post: IPost) => post.id === postId);
   }
 );
+
+export const selectPostsByUser = createSelector(
+  [selectAllPosts, (_: RootState, userId) => userId],
+  (posts, userId) => posts.filter(post => post.userId === userId)
+);
