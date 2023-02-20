@@ -2,13 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import { JSONUsers, TStatus } from '../../typescript/types';
 import { fetchUsers } from './usersThunks';
 
-export interface IUsers {
+export interface IUsersState {
   users: JSONUsers[];
   loading: TStatus;
   error: string | null;
 }
 
-const initialState: IUsers = {
+const initialState: IUsersState = {
   users: [],
   loading: 'idle',
   error: null,

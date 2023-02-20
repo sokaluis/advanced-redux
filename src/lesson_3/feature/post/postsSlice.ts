@@ -1,12 +1,11 @@
-import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
-import { addNewPost, fetchPosts } from './postsThunk';
-import { sub } from "date-fns";
-import { JSONPosts, TStatus } from '../../typescript/types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { fetchPostMatcher, addNewPostMatcher } from '../../app/thunks';
+import { IReactions, JSONPosts, TStatus } from '../../typescript';
 
-interface IPosts {
+export interface IPostsState {
   posts: IPost[];
   status: TStatus;
-  error: null | Error;
+  error: null | string;
 }
 
 export interface IPost extends JSONPosts {
@@ -14,60 +13,21 @@ export interface IPost extends JSONPosts {
   reactions: IReactions;
 }
 
-export interface IReactions {
-  thumbsUp: number;
-  wow: number;
-  heart: number;
-  rocket: number;
-  coffee: number;
-}
-
 type TReaction = {
   postId: number;
   reaction: keyof IReactions;
 };
 
-const initialState: IPosts = {
+const initialState: IPostsState = {
   posts: [],
   status: 'idle',
   error: null
-};
-
-const initReactions: IReactions = {
-  thumbsUp: 0,
-  wow: 0,
-  heart: 0,
-  rocket: 0,
-  coffee: 0
 };
 
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded: {
-      reducer(state, action: PayloadAction<IPosts>) {
-        state.posts = action.payload.posts;
-        state.status = action.payload.status;
-        state.error = action.payload.error;
-      },
-      prepare(title: string, body: string, userId: number) {
-        const newPost: IPost = {
-          id: Number(nanoid()),
-          title,
-          body,
-          userId,
-          date: new Date().toISOString(),
-          reactions: initReactions
-        };
-        const payload: IPosts = {
-          posts: [newPost],
-          status: 'succeeded',
-          error: null,
-        };
-        return { payload };
-      },
-    },
     reactionAdded: (state, action: PayloadAction<TReaction>) => {
       const { postId, reaction } = action.payload;
       const existingPost = state.posts.find(post => post.id === postId);
@@ -78,34 +38,14 @@ export const postsSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchPosts.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<any>) => {
-        state.status = 'succeeded';
-        // Adding date and reactions
-        let min = 1;
-        const loadedPosts = action.payload.map((post: any) => {
-          post.date = sub(new Date(), { minutes: min++ }).toISOString();
-          post.reactions = initReactions;
-          return post;
-        });
-
-        // Add any fetched posts to the array
-        state.posts = loadedPosts;
-      })
-      .addCase(fetchPosts.rejected, (state, action: PayloadAction<any>) => {
-        state.status = 'failed';
-        state.error = action.payload.error.message;
-      })
-      .addCase(addNewPost.fulfilled, (state, action) => {
-        action.payload.userId = Number(action.payload.userId);
-        action.payload.date = new Date().toISOString();
-        action.payload.reactions = initReactions;
-        state.posts.push(action.payload);
-      });
+      .addMatcher(fetchPostMatcher.matcher, fetchPostMatcher.reducer)
+      .addMatcher(fetchPostMatcher.pendingMatcher, fetchPostMatcher.pendingReducer)
+      .addMatcher(fetchPostMatcher.rejectedMatcher, fetchPostMatcher.rejectedReducer)
+      .addMatcher(addNewPostMatcher.matcher, addNewPostMatcher.reducer)
+      .addMatcher(addNewPostMatcher.pendingMatcher, addNewPostMatcher.pendingReducer)
+      .addMatcher(addNewPostMatcher.rejectedMatcher, addNewPostMatcher.rejectedReducer);
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { postAdded, reactionAdded } = postsSlice.actions;
+export const { reactionAdded } = postsSlice.actions;

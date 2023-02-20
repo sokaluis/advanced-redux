@@ -19,7 +19,7 @@ const PostsList = () => {
     const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date));
     content = orderedPosts.map(post => <PostsExcerpt key={post.id} post={post} />);
   } else if (postStatus === 'failed') {
-    content = <p>{postsErrors?.message}</p>;
+    content = <p>{postsErrors}</p>;
   }
 
   useEffect(() => {
