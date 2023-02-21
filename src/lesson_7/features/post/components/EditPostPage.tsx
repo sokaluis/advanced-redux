@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/stores";
-import { selectPostById } from "./postsSelector";
-import { selectAllUsers } from "../users/userSelector";
+import { useAppDispatch, useAppSelector } from "../../../app/stores";
+import { selectPostById } from "../postsSelector";
+import { selectAllUsers } from "../../users/userSelector";
 import { ChangeEvent, useState } from "react";
-import { IPost, TStatus } from "../../typescript";
-import { deletePostThunk, updatePostThunk } from "../../app/thunks";
+import { IPost, TStatus } from "../../../typescript";
+import { deletePostThunk, updatePostThunk } from "../../../app/thunks";
 
 const EditPostForm = () => {
   const { postId } = useParams();

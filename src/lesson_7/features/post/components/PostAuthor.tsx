@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
-import { useAppSelector } from '../../app/stores';
-import { selectAllUsers } from '../users/userSelector';
+import { useAppSelector } from '../../../app/stores';
+import { selectAllUsers } from '../../users/userSelector';
 
 interface IPostAuthor extends PropsWithChildren {
   userId: number;

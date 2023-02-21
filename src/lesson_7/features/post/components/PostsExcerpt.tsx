@@ -3,8 +3,8 @@ import PostAuthor from './PostAuthor';
 import ReactionButtons from './ReactionButtons';
 import TimeAgo from './TimeAgo';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../app/stores';
-import { selectPostById } from './postsSelector';
+import { useAppSelector } from '../../../app/stores';
+import { selectPostById } from '../postsSelector';
 import { EntityId } from '@reduxjs/toolkit';
 
 interface PostsExcerptProps extends PropsWithChildren {

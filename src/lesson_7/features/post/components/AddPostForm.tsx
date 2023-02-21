@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/stores';
-import { selectAllUsers } from '../users/userSelector';
-import { TStatus } from '../../typescript';
-import { addNewPost } from './postsThunk';
+import { useAppDispatch, useAppSelector } from '../../../app/stores';
+import { selectAllUsers } from '../../users/userSelector';
+import { TStatus } from '../../../typescript';
 import { nanoid } from '@reduxjs/toolkit';
+import { addNewPostThunk } from '../../../app/thunks';
 
 const AddPostForm = () => {
   const dispatch = useAppDispatch();
@@ -26,7 +26,7 @@ const AddPostForm = () => {
     if (canSave) {
       try {
         setAddRequestStatus('loading');
-        dispatch(addNewPost({ title, body: content, userId: Number(userId), id: Number(nanoid()) })).unwrap();
+        dispatch(addNewPostThunk({ title, body: content, userId: Number(userId), id: Number(nanoid()) })).unwrap();
         setTitle('');
         setContent('');
         setUserId('');

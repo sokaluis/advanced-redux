@@ -8,7 +8,7 @@ interface AddNewPostMatcher extends AsyncFullMatchers<EntityPostState, EntityPos
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-export const addNewPost = createAsyncThunk('posts/addNewPost', async (initialPost: JSONPosts) => {
+export const addNewPostThunk = createAsyncThunk('posts/addNewPost', async (initialPost: JSONPosts) => {
   try {
     const response = await axios.post(POSTS_URL, initialPost);
     return response.data;
@@ -19,8 +19,8 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (initialPos
 });
 
 export const addNewPostMatcher: AddNewPostMatcher = {
-  ...extendedMatcher<IPostsState, typeof addNewPost>(addNewPost),
-  matcher: (action) => action.type === addNewPost.fulfilled.type,
+  ...extendedMatcher<IPostsState, typeof addNewPostThunk>(addNewPostThunk),
+  matcher: (action) => action.type === addNewPostThunk.fulfilled.type,
   reducer(state, action) {
     state.status = 'succeeded';
     action.payload.userId = Number(action.payload.userId);

@@ -1,9 +1,9 @@
 import { Link, useParams } from "react-router-dom";
-import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
-import { selectPostById } from './postsSelector';
-import { useAppSelector } from '../../app/stores';
+import { useAppSelector } from "../../../app/stores";
+import { selectPostById } from "../postsSelector";
+import PostAuthor from "./PostAuthor";
 
 const SinglePostPage = () => {
   const { postId } = useParams();

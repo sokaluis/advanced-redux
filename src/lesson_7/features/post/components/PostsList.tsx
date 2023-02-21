@@ -1,6 +1,6 @@
-import { useAppSelector } from '../../app/stores';
+import { useAppSelector } from '../../../app/stores';
 
-import { selectPostIds, getPostsStatus, getPostsErrors } from './postsSelector';
+import { selectPostIds, getPostsStatus, getPostsErrors } from '../postsSelector';
 import PostsExcerpt from './PostsExcerpt';
 
 const PostsList = () => {
@@ -14,7 +14,7 @@ const PostsList = () => {
   } else if (postStatus === 'succeeded') {
     content = orderedPosts.map(postId => <PostsExcerpt key={postId} postId={postId} />);
   } else if (postStatus === 'failed') {
-    content = <p>{postsErrors}</p>;
+    content = <p>{postsErrors?.toString()}</p>;
   }
 
 

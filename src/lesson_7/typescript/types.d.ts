@@ -11,7 +11,7 @@ export interface IReactions {
 
 export interface IPostsState {
   status: TStatus;
-  error: null | string;
+  error: TError;
   count?: number;
 }
 

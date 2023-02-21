@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../app/stores';
-import { selectAllUsers } from './userSelector';
+import { useAppSelector } from '../../../app/stores';
+import { selectAllUsers } from '../userSelector';
 
 const UsersList = () => {
   const users = useAppSelector(selectAllUsers);
