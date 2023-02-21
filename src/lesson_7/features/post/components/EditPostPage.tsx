@@ -5,11 +5,14 @@ import { selectAllUsers } from "../../users/userSelector";
 import { ChangeEvent, useState } from "react";
 import { IPost, TStatus } from "../../../typescript";
 import { deletePostThunk, updatePostThunk } from "../../../app/thunks";
+import { useDeletePostMutation, useUpdatePostMutation } from "../postsSlice";
 
 const EditPostForm = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+
+  const [updatePost, { isLoading }] = useUpdatePostMutation();
+  const [deletePost] = useDeletePostMutation();
 
   const post = useAppSelector((state) => selectPostById(state, Number(postId)));
   const users = useAppSelector(selectAllUsers);
@@ -17,7 +20,6 @@ const EditPostForm = () => {
   const [title, setTitle] = useState(post?.title ?? '');
   const [content, setContent] = useState(post?.body ?? '');
   const [userId, setUserId] = useState(post?.userId!);
-  const [requestStatus, setRequestStatus] = useState<TStatus>('idle');
 
 
   if (!post) {
@@ -32,9 +34,9 @@ const EditPostForm = () => {
   const onContentChanged = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
   const onAuthorChanged = (e: ChangeEvent<HTMLSelectElement>) => setUserId(Number(e.target.value));
 
-  const canSave = [title, content, userId].every(Boolean) && requestStatus === 'idle';
+  const canSave = [title, content, userId].every(Boolean) && !isLoading;
 
-  const onSavePostClicked = () => {
+  const onSavePostClicked = async () => {
     if (canSave) {
       const updatedPost: IPost = {
         ...post,
@@ -45,8 +47,7 @@ const EditPostForm = () => {
         reactions: post.reactions,
       };
       try {
-        setRequestStatus('loading');
-        dispatch(updatePostThunk(updatedPost)).unwrap();
+        await updatePost(updatedPost).unwrap();
 
         setTitle('');
         setContent('');
@@ -54,8 +55,6 @@ const EditPostForm = () => {
         navigate(`/post/${postId}`);
       } catch (err) {
         console.error('Failed to save the post', err);
-      } finally {
-        setRequestStatus('idle');
       }
     }
   };
@@ -67,10 +66,9 @@ const EditPostForm = () => {
     >{user.name}</option>
   ));
 
-  const onDeletePostClicked = () => {
+  const onDeletePostClicked = async () => {
     try {
-      setRequestStatus('loading');
-      dispatch(deletePostThunk({ ...post, id: post.id })).unwrap();
+      await deletePost({ ...post, id: post.id }).unwrap();
 
       setTitle('');
       setContent('');
@@ -78,8 +76,6 @@ const EditPostForm = () => {
       navigate('/');
     } catch (err) {
       console.error('Failed to delete the post', err);
-    } finally {
-      setRequestStatus('idle');
     }
   };
 

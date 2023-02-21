@@ -22,7 +22,6 @@ const PostsList = () => {
     content = <p>{JSON.stringify(error)}</p>;
   }
 
-
   return (
     <section>
       {content}

@@ -1,17 +1,19 @@
 import { ChangeEvent, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../app/stores';
+import { nanoid } from '@reduxjs/toolkit';
+import { useAppSelector } from '../../../app/stores';
 import { selectAllUsers } from '../../users/userSelector';
 import { TStatus } from '../../../typescript';
-import { nanoid } from '@reduxjs/toolkit';
-import { addNewPostThunk } from '../../../app/thunks';
+import { useNavigate } from 'react-router-dom';
+import { useAddNewPostMutation } from '../postsSlice';
 
 const AddPostForm = () => {
-  const dispatch = useAppDispatch();
+  const [addNewPost, { isLoading }] = useAddNewPostMutation();
+
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");
-  const [addRequestStatus, setAddRequestStatus] = useState<TStatus>('idle');
 
   const users = useAppSelector(selectAllUsers);
 
@@ -19,21 +21,19 @@ const AddPostForm = () => {
   const onContentChanged = (e: ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value);
   const onAuthorChanged = (e: ChangeEvent<HTMLSelectElement>) => setUserId(e.target.value);
 
-  const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle';
+  const canSave = [title, content, userId].every(Boolean) && !isLoading;
 
-  const onSavePostClicked = (e: ChangeEvent<HTMLFormElement>) => {
+  const onSavePostClicked = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (canSave) {
       try {
-        setAddRequestStatus('loading');
-        dispatch(addNewPostThunk({ title, body: content, userId: Number(userId), id: Number(nanoid()) })).unwrap();
+        await addNewPost({ title, body: content, userId: Number(userId) }).unwrap();
         setTitle('');
         setContent('');
         setUserId('');
+        navigate('/');
       } catch (err) {
         console.error('Failed to save the post', err);
-      } finally {
-        setAddRequestStatus('idle');
       }
     }
   };

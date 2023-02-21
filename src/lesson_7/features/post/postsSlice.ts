@@ -47,9 +47,51 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         ...result.ids.map((id: any) => ({ type: 'Post', id }))
       ]
     }),
+    addNewPost: builder.mutation({
+      query: initialPost => ({
+        url: '/posts',
+        method: 'POST',
+        body: {
+          ...initialPost,
+          userId: Number(initialPost.userId),
+          date: new Date().toISOString(),
+          reactions: initReactions
+        }
+      }),
+      invalidatesTags: [
+        { type: 'Post', id: "LIST" }
+      ]
+    }),
+    updatePost: builder.mutation({
+      query: initialPost => ({
+        url: `/posts/${initialPost.id}`,
+        method: 'PUT',
+        body: {
+          ...initialPost,
+          date: new Date().toISOString()
+        }
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Post', id: arg.id }
+      ]
+    }),
+    deletePost: builder.mutation({
+      query: ({ id }) => ({
+        url: `/posts/${id}`,
+        method: 'DELETE',
+        body: { id }
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Post', id: arg.id }
+      ]
+    }),
   })
 });
 
 export const {
-  useGetPostsQuery
+  useGetPostsQuery,
+  useGetPostsByUserIdQuery,
+  useAddNewPostMutation,
+  useDeletePostMutation,
+  useUpdatePostMutation
 } = extendedApiSlice;
