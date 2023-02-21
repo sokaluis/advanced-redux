@@ -5,6 +5,7 @@ import './styles.css';
 import { store } from './app/stores';
 import Layout from './components/Layout';
 import Public from './components/Public';
+import Login from './features/auth/components/Login';
 
 const App = () => {
   return (
@@ -12,7 +13,7 @@ const App = () => {
       <Route path="/" element={<Layout />}>
         {/* public routes */}
         <Route index element={<Public />} />
-        {/* <Route path="login" element={<Login />} /> */}
+        <Route path="login" element={<Login />} />
 
         {/* protected routes */}
         {/* <Route element={<RequireAuth />}>

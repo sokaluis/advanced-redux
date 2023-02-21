@@ -1,4 +1,5 @@
 export interface AuthState {
   user: string | null,
-  accessToken: string | null,
+  accessToken?: string | null,
+  data?: any;
 }
