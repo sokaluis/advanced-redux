@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Lesson6 from './lesson_6/src/Lesson6';
+import Lesson7 from './lesson_7/Lesson7';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -9,6 +9,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     {/* <Lesson3 /> */}
     {/* <Lesson4 /> */}
     {/* <Lesson5 /> */}
-    <Lesson6 />
+    {/* <Lesson6 /> */}
+    <Lesson7 />
   </React.StrictMode>,
 );
