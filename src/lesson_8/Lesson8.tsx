@@ -6,6 +6,7 @@ import { store } from './app/stores';
 import Layout from './components/Layout';
 import Public from './components/Public';
 import Login from './features/auth/components/Login';
+import RequireAuth from './features/auth/components/RequireAuth';
 
 const App = () => {
   return (
@@ -16,10 +17,10 @@ const App = () => {
         <Route path="login" element={<Login />} />
 
         {/* protected routes */}
-        {/* <Route element={<RequireAuth />}>
-          <Route path="welcome" element={<Welcome />} />
+        <Route element={<RequireAuth />}>
+          {/* <Route path="welcome" element={<Welcome />} />
           <Route path="userslist" element={<UsersList />} /> */}
-        {/* </Route> */}
+        </Route>
 
       </Route>
     </Routes>
