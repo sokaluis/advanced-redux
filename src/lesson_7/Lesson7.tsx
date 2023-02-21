@@ -5,14 +5,15 @@ import AddPostForm from './features/post/components/AddPostForm';
 import './styles.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
-import { fetchUsersThunk, fetchPostsThunk } from './app/thunks';
+import { fetchUsersThunk } from './app/thunks';
 import EditPostForm from './features/post/components/EditPostPage';
 import UsersList from './features/users/components/UsersList';
 import UserPage from './features/users/components/UserPage';
 import SinglePostPage from './features/post/components/SinglePostPage';
+import { extendedApiSlice } from './features/post/postsSlice';
 
 store.dispatch(fetchUsersThunk());
-store.dispatch(fetchPostsThunk());
+store.dispatch(extendedApiSlice.endpoints.getPosts.initiate());
 
 const App = () => (
   <Routes>

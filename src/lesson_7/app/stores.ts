@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { postsSlice } from '../features/post/postsSlice';
+import { apiSlice } from '../features/api/apiSlice';
 import { usersSlice } from '../features/users/userSlice';
 
 export const store = configureStore({
   reducer: {
-    posts: postsSlice.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
     users: usersSlice.reducer,
-  }
+  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -1,20 +1,25 @@
 import { useAppSelector } from '../../../app/stores';
-
-import { selectPostIds, getPostsStatus, getPostsErrors } from '../postsSelector';
+import { selectPostIds } from '../postsSelector';
+import { useGetPostsQuery } from '../postsSlice';
 import PostsExcerpt from './PostsExcerpt';
 
 const PostsList = () => {
+  const {
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useGetPostsQuery();
+
   const orderedPosts = useAppSelector(selectPostIds);
-  const postStatus = useAppSelector(getPostsStatus);
-  const postsErrors = useAppSelector(getPostsErrors);
 
   let content;
-  if (postStatus === 'loading') {
+  if (isLoading) {
     content = <p>"Loading..."</p>;
-  } else if (postStatus === 'succeeded') {
+  } else if (isSuccess) {
     content = orderedPosts.map(postId => <PostsExcerpt key={postId} postId={postId} />);
-  } else if (postStatus === 'failed') {
-    content = <p>{postsErrors?.toString()}</p>;
+  } else if (isError) {
+    content = <p>{JSON.stringify(error)}</p>;
   }
 
 
