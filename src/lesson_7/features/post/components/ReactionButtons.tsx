@@ -1,8 +1,7 @@
 
-import { useDispatch } from "react-redux";
-import { reactionAdded } from '../postsSlice';
 import { FC, PropsWithChildren } from "react";
 import { IPost, IReactions } from "../../../typescript";
+import { useAddReactionMutation } from "../postsSlice";
 
 interface IReactionButtons extends PropsWithChildren {
   post: IPost;
@@ -17,7 +16,12 @@ const reactionEmoji = {
 };
 
 const ReactionButtons: FC<IReactionButtons> = ({ post }) => {
-  const dispatch = useDispatch();
+  const [addReaction] = useAddReactionMutation();
+
+  const handleReaction = async (name: keyof IReactions) => {
+    const newValue = post.reactions[name] + 1;
+    await addReaction({ postId: post.id, reactions: { ...post.reactions, [name]: newValue } });
+  };
 
   const reactionButtons = Object.entries(reactionEmoji).map(([name, emoji]) => {
     return (
@@ -26,7 +30,7 @@ const ReactionButtons: FC<IReactionButtons> = ({ post }) => {
         type="button"
         className="reactionButton"
         onClick={() =>
-          dispatch(reactionAdded({ postId: post.id, reaction: name as keyof IReactions }))
+          handleReaction(name as keyof IReactions)
         }
       >
         {emoji} {post.reactions[name as keyof IReactions]}
@@ -36,4 +40,5 @@ const ReactionButtons: FC<IReactionButtons> = ({ post }) => {
 
   return <div>{reactionButtons}</div>;
 };
+
 export default ReactionButtons;

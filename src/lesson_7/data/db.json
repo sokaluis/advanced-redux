@@ -283,22 +283,17 @@
     },
     {
       "userId": 1,
-      "id": 8,
-      "title": "dolorem dolore est ipsam",
-      "body": "dignissimos aperiam dolorem qui eum\nfacilis quibusdam animi sint suscipit qui sint possimus cum\nquaerat magni maiores excepturi\nipsam ut commodi dolor voluptatum modi aut vitae",
+      "id": 10,
+      "title": "optio molestias id quia eum",
+      "body": "quo et expedita modi cum officia vel magni\ndoloribus qui repudiandae\nvero nisi sit\nquos veniam quod sed accusamus veritatis error",
+      "reaction": "thumbsUp",
       "reactions": {
-        "thumbsUp": 4,
+        "thumbsUp": 1,
         "wow": 0,
         "heart": 0,
         "rocket": 0,
-        "coffee": 6
+        "coffee": 0
       }
-    },
-    {
-      "userId": 1,
-      "id": 10,
-      "title": "optio molestias id quia eum",
-      "body": "quo et expedita modi cum officia vel magni\ndoloribus qui repudiandae\nvero nisi sit\nquos veniam quod sed accusamus veritatis error"
     },
     {
       "userId": 2,
