@@ -3,13 +3,18 @@ import PostAuthor from './PostAuthor';
 import ReactionButtons from './ReactionButtons';
 import TimeAgo from './TimeAgo';
 import { Link } from 'react-router-dom';
-import { IPost } from '../../typescript';
+import { useAppSelector } from '../../app/stores';
+import { selectPostById } from './postsSelector';
+import { EntityId } from '@reduxjs/toolkit';
 
 interface PostsExcerptProps extends PropsWithChildren {
-  post: IPost;
+  postId: EntityId | number;
 }
 
-const PostsExcerpt: FC<PostsExcerptProps> = ({ post }) => {
+const PostsExcerpt: FC<PostsExcerptProps> = ({ postId }) => {
+  const post = useAppSelector(state => selectPostById(state, postId));
+  if (!post) return <></>;
+
   return (
     <article>
       <h2>{post.title}</h2>

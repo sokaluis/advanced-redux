@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { extendedMatcher, initReactions } from "../../utils";
-import { AsyncFullMatchers, IPost, IPostsState, JSONPosts } from "../../typescript";
+import { AsyncFullMatchers, IPostsState, JSONPosts } from "../../typescript";
+import { postsAdapter, EntityPostState, EntityPost } from '../../feature/post/postsSlice';
 
-interface AddNewPostMatcher extends AsyncFullMatchers<IPostsState, IPost> { }
+interface AddNewPostMatcher extends AsyncFullMatchers<EntityPostState, EntityPost> { }
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
@@ -25,6 +26,6 @@ export const addNewPostMatcher: AddNewPostMatcher = {
     action.payload.userId = Number(action.payload.userId);
     action.payload.date = new Date().toISOString();
     action.payload.reactions = initReactions;
-    state.posts.push(action.payload);
+    postsAdapter.addOne(state, action.payload);
   },
 };

@@ -1,10 +1,11 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-import { AsyncFullMatchers, IPost, IPostsState, JSONPosts } from "../../typescript";
+import { AsyncFullMatchers, IPostsState, JSONPosts } from "../../typescript";
 import { sub } from "date-fns";
 import { extendedMatcher, initReactions } from "../../utils";
+import { EntityPost, EntityPostState, postsAdapter } from '../../feature/post/postsSlice';
 
-interface IFetchPostMatcher extends AsyncFullMatchers<IPostsState, IPost[]> { }
+interface IFetchPostMatcher extends AsyncFullMatchers<EntityPostState, EntityPost[]> { }
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
@@ -32,6 +33,6 @@ export const fetchPostMatcher: IFetchPostMatcher = {
     });
 
     // Add any fetched posts to the array
-    state.posts = loadedPosts;
+    postsAdapter.upsertMany(state, loadedPosts);
   },
 };

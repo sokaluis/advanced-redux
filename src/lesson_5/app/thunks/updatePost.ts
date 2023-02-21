@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AsyncBasicMatcher, IPost, IPostsState } from "../../typescript";
+import { AsyncBasicMatcher, IPost } from "../../typescript";
+import { EntityPostState, EntityPost, postsAdapter } from '../../feature/post/postsSlice';
 
-interface IUpdatePostMatcher extends AsyncBasicMatcher<IPostsState, IPost> { }
+interface IUpdatePostMatcher extends AsyncBasicMatcher<EntityPostState, EntityPost> { }
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
@@ -27,9 +28,7 @@ export const updatePostMatcher: IUpdatePostMatcher = {
       console.log(action.payload);
       return;
     }
-    const { id } = action.payload;
     action.payload.date = new Date().toISOString();
-    const posts = state.posts.filter(post => post.id !== id);
-    state.posts = [...posts, action.payload];
+    postsAdapter.upsertOne(state, action.payload);
   },
 };

@@ -1,7 +1,6 @@
 export type TStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
 
 export type TError = string | null | Error;
-
 export interface IReactions {
   thumbsUp: number;
   wow: number;
@@ -11,7 +10,6 @@ export interface IReactions {
 }
 
 export interface IPostsState {
-  posts: IPost[];
   status: TStatus;
   error: null | string;
   count?: number;

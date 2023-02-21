@@ -1,18 +1,18 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState, stateSelect } from '../../app/stores';
-import { IPost } from '../../typescript';
+import { postsAdapter } from './postsSlice';
 
-export const selectAllPosts = createSelector(stateSelect, state => state.posts.posts);
 export const getPostsStatus = createSelector(stateSelect, state => state.posts.status);
 export const getPostsErrors = createSelector(stateSelect, state => state.posts.error);
 export const getCounter = createSelector(stateSelect, state => state.posts.count);
 
-export const selectPostById = createSelector(
-  [selectAllPosts, (_: RootState, postId: number) => postId],
-  (postsState, postId) => {
-    return postsState.find((post: IPost) => post.id === postId);
-  }
-);
+// getSelector creates these selectors and we rename them with aliases using destructuring
+export const {
+  selectAll: selectAllPosts,
+  selectById: selectPostById,
+  selectIds: selectPostIds,
+  // pass in a selector that returns the posts slice of state
+} = postsAdapter.getSelectors<RootState>(state => state.posts);
 
 export const selectPostsByUser = createSelector(
   [selectAllPosts, (_: RootState, userId) => userId],

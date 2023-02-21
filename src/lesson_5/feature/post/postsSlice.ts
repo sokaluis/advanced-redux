@@ -1,13 +1,20 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice, createEntityAdapter, EntityState } from '@reduxjs/toolkit';
 import { fetchPostMatcher, addNewPostMatcher, updatePostMatcher, deletePostMatcher } from '../../app/thunks';
-import { IPostsState, TReaction } from '../../typescript';
+import { IPost, IPostsState, TReaction } from '../../typescript';
 
-const initialState: IPostsState = {
-  posts: [],
+export interface EntityPostState extends IPostsState, EntityState<IPost> { }
+
+export interface EntityPost extends IPost, EntityState<IPost> { }
+
+export const postsAdapter = createEntityAdapter<IPost>({
+  sortComparer: (a, b) => b.date.localeCompare(a.date),
+});
+
+const initialState: EntityPostState = postsAdapter.getInitialState({
   status: 'idle',
   error: null,
   count: 0,
-};
+});
 
 export const postsSlice = createSlice({
   name: 'posts',
@@ -15,7 +22,7 @@ export const postsSlice = createSlice({
   reducers: {
     reactionAdded: (state, action: PayloadAction<TReaction>) => {
       const { postId, reaction } = action.payload;
-      const existingPost = state.posts.find(post => post.id === postId);
+      const existingPost = state.entities[postId];
       if (existingPost) {
         existingPost.reactions[reaction]++;
       }
