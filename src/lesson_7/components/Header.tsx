@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/stores";
-import { getCounter } from "../feature/post/postsSelector";
-import { increaseCount } from "../feature/post/postsSlice";
+import { getCounter } from "../features/post/postsSelector";
+import { increaseCount } from "../features/post/postsSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();

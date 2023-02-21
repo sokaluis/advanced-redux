@@ -3,7 +3,7 @@ import axios from "axios";
 import { AsyncFullMatchers, IPostsState, JSONPosts } from "../../typescript";
 import { sub } from "date-fns";
 import { extendedMatcher, initReactions } from "../../utils";
-import { EntityPost, EntityPostState, postsAdapter } from '../../feature/post/postsSlice';
+import { EntityPost, EntityPostState, postsAdapter } from '../../features/post/postsSlice';
 
 interface IFetchPostMatcher extends AsyncFullMatchers<EntityPostState, EntityPost[]> { }
 

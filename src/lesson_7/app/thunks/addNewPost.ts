@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { extendedMatcher, initReactions } from "../../utils";
 import { AsyncFullMatchers, IPostsState, JSONPosts } from "../../typescript";
-import { postsAdapter, EntityPostState, EntityPost } from '../../feature/post/postsSlice';
+import { postsAdapter, EntityPostState, EntityPost } from '../../features/post/postsSlice';
 
 interface AddNewPostMatcher extends AsyncFullMatchers<EntityPostState, EntityPost> { }
 

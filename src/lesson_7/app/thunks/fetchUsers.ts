@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AsyncBasicMatcher, JSONUsers } from "../../typescript";
-import { IUsersState } from '../../feature/users/userSlice';
+import { IUsersState } from '../../features/users/userSlice';
 
 interface IFetchUserMatcher extends AsyncBasicMatcher<IUsersState, JSONUsers[]> { }
 
