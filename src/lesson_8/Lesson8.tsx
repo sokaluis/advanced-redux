@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 import Public from './components/Public';
 import Login from './features/auth/components/Login';
 import RequireAuth from './features/auth/components/RequireAuth';
+import Welcome from './features/auth/components/Welcome';
 
 const App = () => {
   return (
@@ -18,8 +19,8 @@ const App = () => {
 
         {/* protected routes */}
         <Route element={<RequireAuth />}>
-          {/* <Route path="welcome" element={<Welcome />} />
-          <Route path="userslist" element={<UsersList />} /> */}
+          <Route path="welcome" element={<Welcome />} />
+          {/* <Route path="userslist" element={<UsersList />} /> */}
         </Route>
 
       </Route>
